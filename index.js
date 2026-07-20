@@ -1,6 +1,4 @@
-// ============================================================
-// index.js – Weather Alerts App (fully compliant)
-// ============================================================
+
 
 // DOM Elements
 const stateInput = document.getElementById("state-input");
@@ -8,7 +6,6 @@ const fetchButton = document.getElementById("fetch-alerts");
 const alertsDisplay = document.getElementById("alerts-display");
 const errorMessage = document.getElementById("error-message");
 
-// -------- Helper functions for error handling --------
 function clearError() {
     errorMessage.textContent = "";
     errorMessage.classList.add("hidden");
@@ -17,7 +14,7 @@ function clearError() {
 function showError(message) {
     errorMessage.textContent = message;
     errorMessage.classList.remove("hidden");
-    console.error("Error:", message); // as per lab Step 1
+    console.error("Error:", message); 
 }
 
 // -------- Step 1: Fetch weather alerts --------
@@ -31,25 +28,21 @@ async function fetchWeatherAlerts(state) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("API response:", data); // Step 1 – log for testing
+        console.log("API response:", data); 
         return data;
     } catch (error) {
-        console.error("Fetch error:", error.message); // Step 1 – catch & log
-        throw error; // re-throw so the caller can display it
+        console.error("Fetch error:", error.message);
+        throw error; 
     }
 }
 
-// -------- Step 2: Display alerts --------
 function displayAlerts(data) {
-    // Clear previous alerts (already done by caller, but safe to do here too)
     alertsDisplay.innerHTML = "";
 
-    // Use the title from the API (e.g., "Current watches, warnings, and advisories for Minnesota")
     const title = data.title || "Weather Alerts";
-    const features = data.features || []; // safeguard against undefined
+    const features = data.features || []; 
     const count = features.length;
 
-    // Summary message
     const summary = document.createElement("h2");
     summary.textContent = `${title}: ${count}`;
     alertsDisplay.appendChild(summary);
@@ -71,13 +64,11 @@ function displayAlerts(data) {
     alertsDisplay.appendChild(list);
 }
 
-// -------- Step 3 & 4: Main handler (clear & reset, error handling) --------
 async function handleFetchAlerts() {
     // Clear previous errors and alerts
     clearError();
     alertsDisplay.innerHTML = "";
 
-    // ----- Step 4 (input validation) -----
     const state = stateInput.value.trim();
     // Require exactly two uppercase letters
     if (!state || state.length !== 2 || !/^[A-Z]{2}$/.test(state.toUpperCase())) {
@@ -85,23 +76,21 @@ async function handleFetchAlerts() {
         return;
     }
 
-    // Step 3: Clear the input field
     stateInput.value = "";
 
     try {
         const data = await fetchWeatherAlerts(state);
         displayAlerts(data);
-        // On success, error is already cleared
+      
     } catch (error) {
-        // Step 4: Display the error message in the dedicated div
+       
         showError(`Failed to fetch alerts: ${error.message}`);
     }
 }
 
-// -------- Event listeners --------
+
 fetchButton.addEventListener("click", handleFetchAlerts);
 
-// Allow Enter key on the input field
 stateInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
         fetchButton.click();
