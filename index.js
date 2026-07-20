@@ -17,7 +17,6 @@ function showError(message) {
     console.error("Error:", message); 
 }
 
-// -------- Step 1: Fetch weather alerts --------
 async function fetchWeatherAlerts(state) {
     const url = `https://api.weather.gov/alerts/active?area=${state.toUpperCase()}`;
     console.log("Fetching:", url); // for debugging
